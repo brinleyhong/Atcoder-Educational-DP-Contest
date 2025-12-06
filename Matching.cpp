@@ -24,9 +24,8 @@ void solve()
         int cntbit1 = __builtin_popcount(mask);
         for (int i = 0; i<n; ++i)
         {
-            if (checkbit(mask, i) || c[cntbit1][i] == '0') continue;
             int v = 1<<i;
-            dp[mask|v] = (dp[mask|v]%mod + dp[mask]%mod)%mod;
+            if (!checkbit(mask, i) && c[cntbit1][i] == '1') dp[mask|v] = (dp[mask|v] % mod + dp[mask] % mod) % mod;
         }
     }
     cout << dp[(1<<n)-1]%mod;
