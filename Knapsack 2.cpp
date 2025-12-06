@@ -1,28 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+const ll INF = (ll) INT_MAX;
 const int maxn = 1e2;
-const int maxw = 1e5;
+const int maxv = 1e5;
+ll dp[maxv+5];
 int n, W;
-ll dp[maxw+5];
 struct elm
 {
-    int v, w;
+    int w, v;
 }items[maxn+5];
 void solve()
 {
     cin >> n >> W;
-    for (int i = 1; i<=n; ++i) cin >> items[i].w >> items[i].v;
-    ll ans = -1;
+    for (int i=1; i<=maxv; ++i) dp[i] = INF;
+    for (int i = 1; i<=n; ++i) {
+        cin >> items[i].w >> items[i].v;
+    }
     dp[0] = 0;
-    for (int i=1; i<=n; ++i)
+    for (int i = 1; i<=n; ++i)
     {
-        for (int s = W; s>=items[i].w; --s)
+        for (int j = maxv; j >= items[i].v; --j)
         {
-            dp[s] = (ll) max(dp[s], (ll) dp[s-items[i].w] + items[i].v);
+            dp[j] = min(dp[j], (ll) dp[j-items[i].v] + items[i].w);
         }
     }
-    for (int s = 1; s<=W; ++s) ans = max(ans, dp[s]);
+    int ans = 0;
+    for (int i = 1; i<=maxv; ++i)
+    {
+        if (dp[i] <= W) ans = max(ans, i);
+    }
     cout << ans;
 }
 int main()
